@@ -7,12 +7,13 @@ import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 
-import java.util.ArrayList;
-
 import com.androidexperiments.meter.drawers.BatteryDrawer;
 import com.androidexperiments.meter.drawers.CombinedWifiCellularDrawer;
 import com.androidexperiments.meter.drawers.Drawer;
 import com.androidexperiments.meter.drawers.NotificationsDrawer;
+import com.androidexperiments.meter.drawers.qwerty;
+
+import java.util.ArrayList;
 
 /**
  * The Live Wallpaper Service and rendering Engine
@@ -113,22 +114,25 @@ public class MeterWallpaper extends WallpaperService {
 
                 ArrayList<Class> drawerClasses = new ArrayList<Class>();
 
-                //always include wifi + battery
-                drawerClasses.add(CombinedWifiCellularDrawer.class);
-                drawerClasses.add(BatteryDrawer.class);
-                //only include notifications if it has permission
-                if(NotificationService.permissionsGranted){
+                if (qwerty.switchWiFi == 1) {
+                    drawerClasses.add(CombinedWifiCellularDrawer.class);
+                }
+                if (qwerty.swtchBattery == 1) {
+                    drawerClasses.add(BatteryDrawer.class);
+                }
+
+                if (NotificationService.permissionsGranted) {
                     drawerClasses.add(NotificationsDrawer.class);
                 }
 
                 mDrawerIndex++;
-                if( mDrawerIndex >= drawerClasses.size() ){
+                if (mDrawerIndex >= drawerClasses.size()) {
                     mDrawerIndex = 0;
                 }
                 Class cls = drawerClasses.get(mDrawerIndex);
-                if(cls == NotificationsDrawer.class) {
+                if (cls == NotificationsDrawer.class) {
                     mDrawer = new NotificationsDrawer(mContext);
-                } else if(cls == BatteryDrawer.class) {
+                } else if (cls == BatteryDrawer.class) {
                     mDrawer = new BatteryDrawer(mContext);
                 } else {
                     mDrawer = new CombinedWifiCellularDrawer(mContext);
@@ -137,9 +141,8 @@ public class MeterWallpaper extends WallpaperService {
                 mDrawer.start();
                 // Start the drawing loop
                 draw();
-
             } else {
-                if( mDrawer != null ) {
+                if (mDrawer != null) {
                     mDrawer.destroy();
                     mDrawer = null;
                 }

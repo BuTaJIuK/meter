@@ -10,11 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.androidexperiments.meter.drawers.qwerty;
 import com.androidexperiments.meter.fonts.RobotoBoldTypeface;
 import com.androidexperiments.meter.fonts.RobotoLightTypeface;
-
 /**
  * The Main app activity, describes the wallpaper and directs user towards notification settings
  */
@@ -33,6 +35,29 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //grab button references
+        final Switch switchBattery = (Switch) findViewById(R.id.switchBattery);
+        switchBattery.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    qwerty.swtchBattery = 1;
+                } else {
+                    qwerty.swtchBattery = 0;
+                }
+            }
+        });
+        final Switch switchWiFi = (Switch) findViewById(R.id.switchWiFi);
+        switchWiFi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    qwerty.switchWiFi = 1;
+                } else {
+                    qwerty.switchWiFi = 0;
+                }
+            }
+        });
+
         mNotificationsEnabled = (Button) findViewById(R.id.notificationsEnableButton);
         mSetWallpaperBtn = (Button) findViewById(R.id.choseWallpaperButton);
 
